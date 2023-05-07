@@ -7,8 +7,10 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/analytics';
 
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { getAuth } from 'firebase/auth';
 
 firebase.initializeApp({
   apiKey:  `${process.env.REACT_APP_API_KEY}`,
@@ -23,11 +25,13 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
+const auth1=getAuth();
 
 
 function App() {
 
   const [user] = useAuthState(auth);
+  
 
   return (
   
@@ -72,22 +76,28 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection('messages');
-  const query = messagesRef.orderBy('createdAt').limit(25);
+  const query = messagesRef.orderBy('createdAt').limit(500);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
 
   const [formValue, setFormValue] = useState('');
+ 
 
 
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    const { uid, photoURL } = auth.currentUser;
+    const { uid, photoURL, } = auth.currentUser;
+    const u=auth1.currentUser;
+    
+    
 
     await messagesRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      username:u.displayName,
       uid,
+      
       photoURL
     })
 
@@ -116,12 +126,15 @@ function ChatRoom() {
 
 
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL,username} = props.message;
+  
+  
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
   return (<>
     <div className={`message ${messageClass}`}>
+      <p>{username}</p>
       <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
       <p>{text}</p>
     </div>
