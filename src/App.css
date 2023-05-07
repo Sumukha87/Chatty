@@ -62,7 +62,7 @@ form {
   height: 10vh;
   position: fixed;
   bottom: 0;
-  background-color: rgb(185, 74, 74);
+  
   width: 100%;
   max-width: 728px;
   display: flex;
@@ -76,14 +76,14 @@ form button {
 
 
 input {
-  line-height: 1.5;
-  width: 100%;
+  line-height: 1;
+  border-radius: 25px;
+  height: 80%;
+  width:100%;
   font-size: 1.5rem;
   background: rgb(0, 0, 0);
   color: white;
-  outline: none;
   border: none;
-  padding: 0 10px;
 }
 
 button {
@@ -91,11 +91,13 @@ button {
   border: none;
   color: white;
   padding: 15px 32px;
+  border-radius: 25px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
   font-size: 1.25rem;
+  height: 80%;
 }
 
 button:disabled {
